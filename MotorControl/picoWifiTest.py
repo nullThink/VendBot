@@ -57,12 +57,11 @@ def serve(connection):
             in3.value(0)
             in4.value(1)
         elif request == '/dispense':
-            signalPWM = machine.PWM(servoSignal, freq=1000)
-            signalPWM.duty_u16(100)
-            time.sleep(1)
-            signalPWM.duty_u16(-100)
-            time.sleep(1)
-            signalPWM.duty_u16(0)
+            signalPWM = machine.PWM(servoSignal, freq=50)
+            signalPWM.duty_ns(2400000)
+            time.sleep(0.75)
+            signalPWM.duty_ns(300000)
+            time.sleep(1.5)
             signalPWM.deinit()
         else:
             in1.value(0)
