@@ -1,14 +1,14 @@
 import network
 import socket
-from time import sleep
+import time
 import machine
 from secrets import *
 
 ssid = tuftsWifi["user"]
 password = tuftsWifi["pass"]
 
-ssid = personalWifi["user"]
-password = personalWifi["pass"]
+# ssid = personalWifi["user"]
+# password = personalWifi["pass"]
 
 def serve(connection):
     # Motor 1
@@ -18,6 +18,9 @@ def serve(connection):
     # Motor 2
     in3 = machine.Pin(12, machine.Pin.OUT)
     in4 = machine.Pin(13, machine.Pin.OUT)
+    
+    # Servo Motor + PWM Setup
+    servoSignal = machine.Pin(6, machine.Pin.OUT)
 
     while True:
         client = connection.accept()[0]
@@ -53,6 +56,14 @@ def serve(connection):
             
             in3.value(0)
             in4.value(1)
+        elif request == '/dispense':
+            signalPWM = machine.PWM(servoSignal, freq=1000)
+            signalPWM.duty_u16(100)
+            time.sleep(1)
+            signalPWM.duty_u16(-100)
+            time.sleep(1)
+            signalPWM.duty_u16(0)
+            signalPWM.deinit()
         else:
             in1.value(0)
             in2.value(0)
@@ -72,7 +83,7 @@ def connect():
     
     while wlan.isconnected() == False:
         print('Waiting for connection...')
-        sleep(1)
+        time.sleep(1)
     print(wlan.ifconfig())
     return wlan.ifconfig()
     
@@ -107,13 +118,21 @@ def webpage():
                 $.get("/backward");
                 console.log("Down");      
             }
-            if(e.code == "KeyA"){
+            else if(e.code == "KeyA"){
                 $.get("/left");
                 console.log("Left");      
             }
-            if(e.code == "KeyD"){
+            else if(e.code == "KeyD"){
                 $.get("/right");
                 console.log("Right");      
+            }
+            else if(e.code == "Space"){
+                $.get("/dispense");
+                console.log("Dispensing...");
+            }
+            else{
+                $.get("/");
+                console.log("Unrecognized");
             }
 
             });
@@ -138,3 +157,5 @@ try:
     serve(connection)
 except KeyboardInterrupt:
     machine.reset()
+
+
