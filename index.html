@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Vendbot</title>
+    <style>
+         :root {
+            overflow-y: hidden;
+        }
+        
+        body {
+            margin: 8%;
+            margin-top: 2.5%;
+            background-color: #9ABD97;
+            font-family: Arial;
+            font-size: 250%;
+            font-weight: bolder;
+            text-align: center;
+        }
+        
+        #display {
+            border: 2px solid;
+            border-radius: 15px;
+            margin-bottom: 5%;
+            padding: 7%;
+            border-color: #483D03;
+            background-color: #D0F1BF;
+            color: #483D03;
+            text-align: center;
+            font-size: xx-large;
+        }
+        
+        #keypad {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        #keypad>* {
+            background-color: #646536;
+            padding: 13.5%;
+            margin: 1.25%;
+            border-radius: 100%;
+        }
+        
+        #keypad>*>* {
+            color: white;
+        }
+        
+        .transaction_buttons {
+            border-radius: 15px;
+            margin-top: 2%;
+            padding: 5%;
+            background-color: #483D03;
+            color: #9ABD97;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="display">
+        <p id="displayTxt">__</p>
+    </div>
+    <div id="keypad">
+        <div id="A">A</div>
+        <div id="1">1</div>
+        <div id="B">B</div>
+        <div id="2">2</div>
+    </div>
+    <div id="regulate_transactions">
+        <div id="enter" class="transaction_buttons">Enter</div>
+        <div id="show-cart" class="transaction_buttons">Show Cart</div>
+        <div id="finish" class="transaction_buttons">Finish</div>
+    </div>
+</body>
+
+<script>
+    let a_key = document.getElementById("A");
+    let one_key = document.getElementById("1");
+    let two_key = document.getElementById("2");
+    let b_key = document.getElementById("B");
+
+
+    let submit_key = document.getElementById("enter");
+
+    const keypad_keys = [
+        a_key, b_key,
+        one_key, two_key
+    ];
+
+    let keypad_display = document.getElementById("displayTxt");
+    let cart = [];
+
+    window.onload = () => {
+        keypad_keys.forEach((key) => {
+            key.addEventListener("click", () => {
+                currentDisplayHTML = keypad_display.innerHTML;
+                keyString = key.innerHTML;
+
+                if (isNaN(keyString)) {
+                    currentDisplayHTML = keyString + currentDisplayHTML[1];
+                    console.log(currentDisplayHTML);
+                } else {
+                    currentDisplayHTML = currentDisplayHTML[0] + keyString;
+                    console.log(currentDisplayHTML);
+                }
+
+                keypad_display.innerHTML = currentDisplayHTML;
+            })
+        })
+
+        submit_key.addEventListener("click", () => {
+            // First, check if entry is complete.
+            // Then, add to "cart" that can be removed from at any time.
+            // Also, cross-reference item type with database in Airtable for 
+            // // getting price and item name.
+            // Finally, reset the innerHTML of the display
+
+            // Should discuss with Elijah and Sloan, but I'm pretty sure we would
+            // want to allow for multiple items to be purchased. However,
+            // for prototype, should we just focus on one?
+
+            if (!keypad_display.innerHTML.includes("_")) {
+                cart.push(keypad_display.innerHTML);
+                keypad_display.innerHTML = "__";
+                console.log(cart);
+            } else {
+                // Somehow display this to the user, unsure how though. 
+                // Modal perhaps?
+                console.log("This entry isn't complete unfortunately.");
+            }
+        });
+    }
+</script>
+
+</html>
