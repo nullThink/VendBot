@@ -2,6 +2,13 @@
 Tufts University Mechanical Engineering Senior Design Collabots Roaming Vending Machine
 
 # Updates:
+## November 28, 2023
+- Made entire vending interface backend and frontends! Uploaded today, should be fully functional.
+- Async reading of ultrasonic sensors working
+- - Wifi asynchronous processing not working right
+- Data process figured out
+- Force plate stuff figured out
+
 ## November 22, 2023
 - Slacking on updating the Readme unfortunately
 - Added in Load Cell and Ultrasonic Sensor testing code
