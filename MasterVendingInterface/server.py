@@ -21,9 +21,9 @@ import time
 app = Flask(__name__)
 
 # AirTable Setup
-apiToken = 'patOk3g1d7VNKZfZB.b663a157333944b14174b4083ecdc7aeea98e3aa358d1af933ecd7f6a1617877'
-appKey = 'appgspT9lMoIvrhLA'
-tableInventoryKey = 'tblGEVicbSalaY8Ap'
+apiToken = #Token here
+appKey = #Token here 
+tableInventoryKey = #Token here
 
 api = Api(apiToken)
 table = api.table(appKey, tableInventoryKey)
