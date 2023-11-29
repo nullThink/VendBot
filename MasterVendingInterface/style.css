@@ -1,0 +1,68 @@
+:root {
+    overflow-y: hidden;
+}
+
+body {
+    margin: 8%;
+    margin-top: 2.5%;
+    background-color: #9ABD97;
+    font-family: Arial;
+    font-size: 250%;
+    font-weight: bolder;
+    text-align: center;
+}
+
+#display {
+    border: 2px solid;
+    border-radius: 15px;
+    margin-bottom: 5%;
+    padding: 7%;
+    border-color: #483D03;
+    background-color: #D0F1BF;
+    color: #483D03;
+    text-align: center;
+    font-size: xx-large;
+}
+
+#keypad {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#keypad>* {
+    background-color: #646536;
+    padding: 13.5%;
+    margin: 1.25%;
+    border-radius: 100%;
+}
+
+#keypad>*>* {
+    color: white;
+}
+
+.transaction_buttons {
+    border-radius: 15px;
+    margin-top: 2%;
+    padding: 5%;
+    background-color: #483D03;
+    color: #9ABD97;
+}
+
+dialog {
+    opacity: 0.9;
+}
+
+#cart_modal {
+    background-color: #D0F1BF;
+    width: 50vw;
+    height: 50vh;
+    opacity: 1;
+}
+
+#tap_to_start_display {
+    width: 100vw;
+    height: 100vh;
+    background-color: blue
+}
