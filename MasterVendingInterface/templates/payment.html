@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div style="display: flex; flex-direction:row;">
+        <h3>Venmo Username:</h3>
+        &nbsp;
+        <input id="user_input" type="text"></input>
+        <button id="submit_username">Submit</button>
+    </div>
+</body>
+<script>
+    let submitButton = document.getElementById("submit_username");
+    let usernameInput = document.getElementById("user_input");
+
+    submitButton.addEventListener("click", () => {
+        let userRedirect = "/grab_items/" + usernameInput.value;
+        console.log(userRedirect);
+        window.location.href = userRedirect;
+    })
+</script>
+
+</html>
