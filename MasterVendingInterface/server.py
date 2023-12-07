@@ -21,9 +21,9 @@ import time
 app = Flask(__name__)
 
 # AirTable Setup
-apiToken = #Token here
-appKey = #Token here 
-tableInventoryKey = #Token here
+apiToken = #API Token ""
+appKey = #App Key ""
+tableInventoryKey = #Table Inventory ""
 
 api = Api(apiToken)
 table = api.table(appKey, tableInventoryKey)
@@ -80,7 +80,9 @@ class VendingSlot:
 
         # # Add in load cell measuring code :)
         scale1mean = self.scale1.get_data_mean(sampleNums)
+        print(scale1mean)
         scale2mean = self.scale2.get_data_mean(sampleNums)
+        print(scale2mean)
 
         return (scale1mean + scale2mean) / 2
     
@@ -232,6 +234,8 @@ firstRun = True
 compartmentList = [unitA1, unitA2, unitB1, unitB2]
 laterPaymentInfo = ""
 
+# Idea: Add an Update Airtable Entries page
+
 @app.route('/')
 def calibration_home():
     global state
@@ -280,7 +284,7 @@ def calibrate(compartment_id):
             currentComp = compartment
     
     currentComp.calibrateSingleItem()
-    print(currentComp.getCalibratedSingleItem())
+    #print(currentComp.getCalibratedSingleItem())
 
     calibrationPage = """
     <h1>Calibrated Weight for Compartment {0}: {1}</h1>
@@ -352,8 +356,8 @@ def item_verification():
     # Relock solenoids
     # Weigh scales again
     for compartment in compartmentList:
-        compartment.lock()
         postVendWeight.append(compartment.getCurrentWeight())
+        compartment.lock()
 
     weightDifferences = []
 
@@ -366,6 +370,7 @@ def item_verification():
 
     # Find how many items were taken
     # Get prices
+
     for product in compartmentList:
         currCalibratedWeight = product.getCalibratedSingleItem()
         numItemsTaken.append(round(weightDifferences[i] / currCalibratedWeight))
@@ -376,14 +381,30 @@ def item_verification():
  
     # Display to user to ask if amount is correct
 
-    itemList = """"""
+    itemList = """
+    <!DOCTYPE html>
+
+    <head>
+    <title>Document</title>
+    <style>
+        h1 {
+            font-family: 'Arial', Courier, monospace;
+        }
+    </style>
+    </head>
+    <body>
+    <div style="text-align: center; width: 65%; margin: 0 auto; background-color:#D0F1BF; border-radius:5px; padding:5%; margin-top: 5%;">
+    """
 
     for item in priceItemsTaken:
-        itemList = itemList + "<h1>{0}: ${1}, Quantity: {2}</h1>".format(item["name"], item["cost"], item["unrounded_count"])
+        #itemList = itemList + "<h1>{0}: ${1}, Quantity: {2}</h1>".format(item["name"], item["cost"], item["unrounded_count"])
+        itemList = itemList + "<h1>{0}: ${1}</h1>".format(item["name"], item["cost"])
 
-    receipt = """
-    <h1> Is this correct? </h1>"""+itemList+"""
-    <a href="/finish"><button> Yes </button></a>
+    receipt = itemList + """
+        <h1><i><u><strong>Is this correct?</strong></u></i></h1>
+        <a href="/finish"><button style="padding:10px; width:100%; background-color: #9ABD97; border-radius: 5px; border:none; font-size: 20px;"><strong>Yes</strong></button></a>
+    </div>
+    </body>
     """
     return receipt
 
