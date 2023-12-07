@@ -5,17 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        h1,h2,h3 {
+            font-family: 'Arial', Courier, monospace;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <h1>Venmo request has been sent</h1>
-    <br>
-    <h1>Thanks for using the VendBot :)</h1>
-    <h2>This robot will start moving in 5 seconds.</h2>
+    <div style="text-align: center; width: 65%; margin: 0 auto; background-color:#D0F1BF; border-radius:5px; padding:5%; margin-top: 5%;">
+        <h1>Venmo request has been sent</h1>
+        <br>
+        <h1>Thanks for using the VendBot :)</h1>
+        <h2 id="timer_string">This robot will start moving in 5 seconds.</h2>
+    </div>
 </body>
 <script>
-    setTimeout(()=>{window.location.href="/running"},5000)
+    let timer = 4;
+    let countdown = document.getElementById("timer_string");
+    let promiseSent = false;
+
+    let timerChange = new Promise((resolve, reject)=>{
+        setInterval(() => {
+            if(timer > 0)
+                countdown.innerHTML = "This robot will start moving in "+ timer + " seconds.";
+                timer--;
+            
+            if(!promiseSent && timer == 0){
+                resolve("/running");
+                promiseSent = true;
+            }
+        }, 1000)
+        })
+
+    timerChange.then((message)=>{window.location.href = message;})
+    //setTimeout(()=>{window.location.href="/running"},5000)
 </script>
 
 </html>
