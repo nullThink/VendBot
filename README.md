@@ -2,6 +2,10 @@
 Tufts University Mechanical Engineering Senior Design Collabots Roaming Vending Machine
 
 # Updates:
+## December 7, 2023
+- Added in styling updates to pages
+- TODO: Fix weight system for potential added weight (change flow in case foreign object was added.)
+
 ## November 28, 2023
 - Made entire vending interface backend and frontends! Uploaded today, should be fully functional.
 - Async reading of ultrasonic sensors working
