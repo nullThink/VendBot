@@ -9,63 +9,78 @@ password = tuftsWifi["pass"]
 
 # ssid = personalWifi["user"]
 # password = personalWifi["pass"]
+MAX_DUTY = 65535
 
 def serve(connection):
-    # Motor 1
-    in1 = machine.Pin(10, machine.Pin.OUT)
-    in2 = machine.Pin(11, machine.Pin.OUT)
-
-    # Motor 2
-    in3 = machine.Pin(12, machine.Pin.OUT)
-    in4 = machine.Pin(13, machine.Pin.OUT)
+    # Motor Driver Setup
     
-    # Servo Motor + PWM Setup
-    servoSignal = machine.Pin(6, machine.Pin.OUT)
+    # Motor 1 !! Set pins later during setup
+    motorA1 = machine.Pin(18, machine.Pin.OUT)
+    motorA2 = machine.Pin(19, machine.Pin.OUT)
+    motorAPWM = machine.Pin(4)
+    
+    aSignal = machine.PWM(motorAPWM, freq=500, duty_u16=int(MAX_DUTY*0.5))
+
+    # Motor 2 !! Set pins later during setup
+    motorB1 = machine.Pin(20, machine.Pin.OUT)
+    motorB2 = machine.Pin(21, machine.Pin.OUT)
+    motorBPWM = machine.Pin(5)
+    
+    bSignal = machine.PWM(motorBPWM, freq=500, duty_u16=int(MAX_DUTY*0.5))
 
     while True:
-        client = connection.accept()[0]
-        request = client.recv(1024)
-        request = str(request)
-        
-        print(request)
         try:
-            request = request.split()[1]
-        except IndexError:
-            pass
-        if request == '/forward':
-            in1.value(1)
-            in2.value(0)
+            client = connection.accept()[0]
+            request = client.recv(1024)
+            request = str(request)
             
-            in3.value(1)
-            in4.value(0)
-        elif request =='/backward':
-            in1.value(0)
-            in2.value(1)
+            print(request)
+            try:
+                request = request.split()[1]
+            except IndexError:
+                pass
+            if request == '/forward':
+                motorA1.high()
+                motorB1.high()
+                    
+                motorA2.low()
+                motorB2.low()
+            elif request =='/backward':
+                motorA1.low()
+                motorB1.low()
+                
+                motorA2.high()
+                motorB2.high()
+            elif request == '/left':
+                motorA1.high()
+                motorB1.low()
+                
+                motorA2.low()
+                motorB2.high()
+            elif request =='/right':
+                motorA1.low()
+                motorB1.high()
+                
+                motorA2.high()
+                motorB2.low()
+            else:
+                motorA1.low()
+                motorB1.low()
+                
+                motorA2.low()
+                motorB2.low()
+                
+            html = webpage()
+            client.send(html)
             
-            in3.value(0)
-            in4.value(1)
-        elif request == '/left':
-            in1.value(0)
-            in2.value(1)
+            client.close()
             
-            in3.value(1)
-            in4.value(0)
-        elif request =='/right':
-            in1.value(1)
-            in2.value(0)
-            
-            in3.value(0)
-            in4.value(1)
-        else:
-            in1.value(0)
-            in2.value(0)
-            
-            in3.value(0)
-            in4.value(0)
-        html = webpage()
-        client.send(html)
-        
-        client.close()
+        except OSError as e:
+            client.close()
+            print('Connection closed')
+        except KeyboardInterrupt:
+            client.close()
+            print('Connection closed')
     
 def connect():
     #Connect to WLAN
@@ -148,4 +163,7 @@ except KeyboardInterrupt:
 except OSError as e:
     cl.close()
     print('Connection closed')
+
+
+
 
