@@ -1,6 +1,8 @@
 # VendBot
 Tufts University Mechanical Engineering Senior Design Collabots Roaming Vending Machine
 
+This code is a result of the Fall 2023 Senior Design class. 
+
 # Updates:
 ## December 7, 2023
 - Added in styling updates to pages
