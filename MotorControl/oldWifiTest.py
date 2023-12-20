@@ -74,6 +74,7 @@ def serve(connection):
             client.send(html)
             
             client.close()
+            
         except OSError as e:
             client.close()
             print('Connection closed')
@@ -132,10 +133,6 @@ def webpage():
                 $.get("/right");
                 console.log("Right");      
             }
-            else if(e.code == "Space"){
-                $.get("/stop");
-                console.log("EMERGENCY STOP PRESSED");
-            }
             else{
                 $.get("/");
                 console.log("Unrecognized");
@@ -162,12 +159,7 @@ try:
     connection = open_socket(ip)
     serve(connection)
 except KeyboardInterrupt:
-    cl.close()
     machine.reset()
 except OSError as e:
     cl.close()
     print('Connection closed')
-
-
-
-
