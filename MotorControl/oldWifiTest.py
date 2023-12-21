@@ -80,6 +80,7 @@ def serve(connection):
             print('Connection closed')
         except KeyboardInterrupt:
             client.close()
+            machine.reset()
             print('Connection closed')
     
 def connect():
@@ -133,6 +134,10 @@ def webpage():
                 $.get("/right");
                 console.log("Right");      
             }
+            else if(e.code == "Space"){
+                $.get("/stop");
+                console.log("Emergency Stop!!")
+            }
             else{
                 $.get("/");
                 console.log("Unrecognized");
@@ -160,6 +165,7 @@ try:
     serve(connection)
 except KeyboardInterrupt:
     machine.reset()
+    cl.close()
 except OSError as e:
     cl.close()
     print('Connection closed')
